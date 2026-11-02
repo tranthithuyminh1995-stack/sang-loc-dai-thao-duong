@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087f8c">
+<title>Sàng lọc nguy cơ đái tháo đường</title>
+<style>
+:root{--teal:#087f8c;--teal2:#0c9a8e;--navy:#16324f;--ink:#263746;--muted:#687b89;--bg:#f2f8fa;--line:#dce8ec;--white:#fff;--green:#16845b;--amber:#a86108;--red:#b42332;--shadow:0 18px 55px rgba(22,50,79,.10)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#eaf7f7 0%,#f7fafc 48%,#edf5ff 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.5}
+.wrap{max-width:850px;margin:0 auto;padding:24px 16px 44px}.brand{display:flex;align-items:center;gap:12px;margin:0 auto 18px;max-width:760px}.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--teal),#32b7a4);color:#fff;display:grid;place-items:center;font-size:24px;box-shadow:0 8px 18px #087f8c2b}.brand strong{display:block;color:var(--navy);font-size:15px}.brand span{display:block;color:var(--muted);font-size:12px}
+.card{background:#fff;border:1px solid #e2edf0;border-radius:26px;box-shadow:var(--shadow);overflow:hidden}.hero{padding:34px 34px 26px;background:radial-gradient(circle at 90% 8%,#c9f2eb 0,transparent 27%),linear-gradient(135deg,#fff,#f4fbfc)}.eyebrow{display:inline-flex;align-items:center;gap:7px;background:#e3f7f3;color:#08776e;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:750;letter-spacing:.02em}.hero h1{color:var(--navy);font-size:clamp(27px,5vw,39px);line-height:1.13;letter-spacing:-.035em;margin:17px 0 12px;max-width:590px}.hero p{margin:0;color:#5e7380;max-width:590px}.features{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.feature{background:#fff;border:1px solid var(--line);padding:9px 12px;border-radius:12px;font-size:12px;color:#47616d}.body{padding:26px 34px 32px}.progress-top{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);margin-bottom:8px}.progress{height:7px;background:#e7eff2;border-radius:99px;overflow:hidden;margin-bottom:26px}.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#39bba4);transition:width .25s}
+.step{display:none}.step.active{display:block;animation:fade .22s ease}@keyframes fade{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}h2{font-size:22px;letter-spacing:-.02em;color:var(--navy);margin:0 0 6px}.sub{margin:0 0 22px;color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}.field{min-width:0}.field.full{grid-column:1/-1}label.q{display:block;font-size:14px;font-weight:700;color:#344d5c;margin-bottom:8px}.required{color:#d04444}.hint{font-size:12px;color:var(--muted);margin-top:6px}.input{width:100%;border:1px solid #cedde2;border-radius:12px;padding:13px 14px;font:inherit;font-size:15px;color:var(--ink);background:#fff;outline:none;transition:.15s}.input:focus{border-color:var(--teal);box-shadow:0 0 0 3px #087f8c18}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.choice{position:relative}.choice input{position:absolute;opacity:0;pointer-events:none}.choice span{min-height:46px;border:1px solid #d7e4e8;border-radius:12px;padding:11px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;font-size:14px;background:#fff;transition:.15s}.choice span:before{content:"";width:16px;height:16px;border:1.5px solid #a8bbc4;border-radius:50%;flex:none}.choice input:checked+span{border-color:var(--teal);background:#edfaf8;color:#086f70;font-weight:700;box-shadow:inset 0 0 0 1px var(--teal)}.choice input:checked+span:before{border:5px solid var(--teal);background:#fff}.choice input:focus-visible+span{outline:3px solid #087f8c44}.question{padding:16px;border:1px solid #e1ecef;border-radius:16px;margin-bottom:12px;background:#fcfefe}.question .q{margin-bottom:12px}.question .choices{max-width:380px}.notice{padding:13px 15px;border-radius:13px;background:#eef7ff;color:#385c78;font-size:13px;margin:18px 0 0}.actions{display:flex;justify-content:space-between;gap:12px;margin-top:28px}.btn{border:0;border-radius:13px;padding:13px 19px;font:inherit;font-size:14px;font-weight:750;cursor:pointer;transition:transform .15s,filter .15s}.btn:hover{filter:brightness(.98);transform:translateY(-1px)}.primary{color:#fff;background:linear-gradient(120deg,#087f8c,#0d9d91);box-shadow:0 8px 18px #087f8c25}.secondary{color:#47616d;background:#f1f6f7;border:1px solid #dce7ea}.result{display:none}.result.show{display:block}.result-banner{padding:24px;border-radius:19px;background:#eaf8f1;border:1px solid #ccebdd;margin-bottom:20px}.result-banner.low{background:#eaf8f1;border-color:#ccebdd}.result-banner.high{background:#fff4e6;border-color:#f5d6a9}.result-banner.alert{background:#fff0f1;border-color:#f3c7cc}.result-tag{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.result-banner h2{font-size:26px;margin:7px 0}.result-banner p{margin:0;color:#4e6570}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}.metric{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fff}.metric span{display:block;font-size:12px;color:var(--muted)}.metric strong{display:block;color:var(--navy);font-size:22px;margin-top:3px}.metric small{font-size:11px;color:var(--muted)}.advice-list{display:grid;gap:12px;margin-top:16px}.advice{display:flex;gap:12px;padding:15px;border:1px solid #e0eaed;border-radius:15px;background:#fff}.advice-icon{width:38px;height:38px;flex:none;display:grid;place-items:center;border-radius:12px;background:#e8f6f4;font-size:19px}.advice h3{font-size:14px;margin:0 0 4px;color:var(--navy)}.advice p{font-size:13px;color:#5e7380;margin:0}.footnote{font-size:12px;color:var(--muted);margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}.error{display:none;color:var(--red);font-size:13px;margin-top:10px}.error.show{display:block}.hidden{display:none!important}
+@media(max-width:600px){.wrap{padding:13px 10px 28px}.brand{margin-bottom:12px}.hero{padding:25px 21px 21px}.body{padding:22px 19px 24px}.grid{grid-template-columns:1fr;gap:14px}.field.full{grid-column:auto}.metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.metric{padding:11px 9px}.metric strong{font-size:19px}.metric span{font-size:11px}.actions .btn{padding:12px 14px}.hero h1{font-size:29px}.choices{gap:7px}.choice span{padding:10px;font-size:13px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="logo">✚</div><div><strong>SÀNG LỌC SỨC KHỎE CỘNG ĐỒNG</strong><span>Chủ động đánh giá nguy cơ · Bảo vệ sức khỏe lâu dài</span></div></div>
+  <main class="card">
+    <section class="hero" id="hero">
+      <div class="eyebrow">♥ KIỂM TRA SỨC KHỎE CỦA BẠN</div>
+      <h1>Đánh giá nguy cơ<br>đái tháo đường</h1>
+      <p>Trả lời một số câu hỏi ngắn để nhận kết quả đánh giá nguy cơ, chỉ số BMI và lời khuyên sức khỏe phù hợp với bạn.</p>
+      <div class="features"><div class="feature">⏱ Khoảng 3–5 phút</div><div class="feature">📱 Dễ sử dụng trên điện thoại</div><div class="feature">🔒 Không cần tạo tài khoản</div></div>
+    </section>
+    <section class="body" id="formArea">
+      <div class="progress-top"><span id="stepLabel">Bước 1/4 · Thông tin cơ bản</span><span id="progressPct">25%</span></div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <form id="assessment" novalidate>
+        <section class="step active" data-title="Thông tin cơ bản">
+          <h2>Thông tin cơ bản</h2><p class="sub">Các thông tin này được dùng để tính điểm đánh giá.</p>
+          <div class="grid">
+            <div class="field"><label class="q" for="age">Tuổi của bạn <b class="required">*</b></label><input class="input" id="age" type="number" min="18" max="120" placeholder="Ví dụ: 45" required><div class="hint">Bộ câu hỏi áp dụng cho người trưởng thành.</div></div>
+            <div class="field"><label class="q">Giới tính <b class="required">*</b></label><div class="choices">
+              <label class="choice"><input type="radio" name="sex" value="male" required><span>Nam</span></label>
+              <label class="choice"><input type="radio" name="sex" value="female"><span>Nữ</span></label>
+            </div></div>
+            <div class="field"><label class="q" for="height">Chiều cao (cm) <b class="required">*</b></label><input class="input" id="height" type="number" min="100" max="230" placeholder="Ví dụ: 156" required></div>
+            <div class="field"><label class="q" for="weight">Cân nặng (kg) <b class="required">*</b></label><input class="input" id="weight" type="number" min="25" max="300" step="0.1" placeholder="Ví dụ: 54" required></div>
+            <div class="field full hidden" id="pregField"><label class="q">Nếu là nữ: Bạn đã từng được chẩn đoán mắc đái tháo đường thai kỳ chưa? <b class="required">*</b></label><div class="choices">
+              <label class="choice"><input type="radio" name="preg" value="yes"><span>Có</span></label><label class="choice"><input type="radio" name="preg" value="no"><span>Không</span></label>
+            </div></div>
+          </div>
+          <div class="notice">Thông tin được xử lý ngay trên trình duyệt trong bản mẫu này; chưa gửi hoặc lưu lên máy chủ.</div>
+        </section>
+        <section class="step" data-title="Tiền sử sức khỏe">
+          <h2>Tiền sử sức khỏe</h2><p class="sub">Hãy chọn câu trả lời phù hợp với tình trạng của bạn.</p>
+          <div class="question"><label class="q">Bố mẹ, anh/chị/em ruột của bạn có mắc bệnh đái tháo đường không? <b class="required">*</b></label><div class="choices">
+            <label class="choice"><input type="radio" name="family" value="yes" required><span>Có</span></label><label class="choice"><input type="radio" name="family" value="no"><span>Không</span></label>
+          </div></div>
+          <div class="question"><label class="q">Bạn đã từng được chẩn đoán mắc tăng huyết áp chưa? <b class="required">*</b></label><div class="choices">
+            <label class="choice"><input type="radio" name="hypertension" value="yes" required><span>Có</span></label><label class="choice"><input type="radio" name="hypertension" value="no"><span>Không</span></label>
+          </div></div>
+          <div class="question"><label class="q">Bạn có vận động thể lực ít nhất 30 phút/ngày và 5 ngày/tuần không? Bao gồm thể dục, thể thao, đi bộ và lao động chân tay. <b class="required">*</b></label><div class="choices">
+            <label class="choice"><input type="radio" name="activity" value="yes" required><span>Có, đạt khuyến nghị</span></label><label class="choice"><input type="radio" name="activity" value="no"><span>Không đạt</span></label>
+          </div></div>
+        </section>
+        <section class="step" data-title="Dấu hiệu cần lưu ý">
+          <h2>Dấu hiệu cần lưu ý</h2><p class="sub">Trong thời gian gần đây, bạn có thường xuyên gặp những dấu hiệu sau không?</p>
+          <div class="question"><label class="q">Khát nhiều, uống nhiều, tiểu nhiều hoặc tiểu đêm?</label><div class="choices">
+            <label class="choice"><input type="radio" name="sym1" value="yes" required><span>Có</span></label><label class="choice"><input type="radio" name="sym1" value="no"><span>Không</span></label>
+          </div></div>
+          <div class="question"><label class="q">Ăn nhiều nhưng sụt cân không rõ nguyên nhân?</label><div class="choices">
+            <label class="choice"><input type="radio" name="sym2" value="yes" required><span>Có</span></label><label class="choice"><input type="radio" name="sym2" value="no"><span>Không</span></label>
+          </div></div>
+          <div class="question"><label class="q">Nhìn mờ?</label><div class="choices">
+            <label class="choice"><input type="radio" name="sym3" value="yes" required><span>Có</span></label><label class="choice"><input type="radio" name="sym3" value="no"><span>Không</span></label>
+          </div></div>
+          <div class="question"><label class="q">Mệt mỏi kéo dài?</label><div class="choices">
+            <label class="choice"><input type="radio" name="sym4" value="yes" required><span>Có</span></label><label class="choice"><input type="radio" name="sym4" value="no"><span>Không</span></label>
+          </div></div>
+          <div class="question"><label class="q">Nhiễm trùng da tái phát hoặc vết thương lâu lành?</label><div class="choices">
+            <label class="choice"><input type="radio" name="sym5" value="yes" required><span>Có</span></label><label class="choice"><input type="radio" name="sym5" value="no"><span>Không</span></label>
+          </div></div>
+          <div class="notice">Nếu có bất kỳ dấu hiệu nào kể trên, bạn nên được nhân viên y tế đánh giá; bảng hỏi này không dùng để chẩn đoán bệnh.</div>
+        </section>
+        <section class="step" data-title="Xác nhận">
+          <h2>Bạn đã hoàn thành câu hỏi</h2><p class="sub">Vui lòng kiểm tra thông tin trước khi xem kết quả.</p>
+          <div class="question" id="summary"></div>
+          <div class="notice">Kết quả chỉ có giá trị sàng lọc, không thay thế chẩn đoán hoặc tư vấn trực tiếp của bác sĩ.</div>
+        </section>
+        <div class="error" id="error">Vui lòng trả lời các câu hỏi bắt buộc trước khi tiếp tục.</div>
+        <div class="actions"><button class="btn secondary" type="button" id="backBtn" disabled>← Quay lại</button><button class="btn primary" type="button" id="nextBtn">Tiếp tục →</button></div>
+      </form>
+    </section>
+    <section class="body result" id="resultArea">
+      <div id="resultBanner" class="result-banner low"><div id="resultTag" class="result-tag">KẾT QUẢ SÀNG LỌC</div><h2 id="resultTitle">Kết quả của bạn</h2><p id="resultText"></p></div>
+      <div class="metrics">
+        <div class="metric"><span>Điểm nguy cơ</span><strong id="scoreMetric">0</strong><small id="scoreLabel">điểm</small></div>
+        <div class="metric"><span>Chỉ số BMI</span><strong id="bmiMetric">—</strong><small id="bmiLabel">kg/m²</small></div>
+        <div class="metric"><span>Phân loại BMI</span><strong id="bmiClass" style="font-size:15px">—</strong><small>theo ngưỡng trong bộ câu hỏi</small></div>
+      </div>
+      <h2>Lời khuyên dành cho bạn</h2><p class="sub">Các khuyến nghị dưới đây được chọn theo câu trả lời của bạn.</p>
+      <div class="advice-list" id="adviceList"></div>
+      <p class="footnote"><b>Lưu ý:</b> Đây là công cụ sàng lọc tham khảo, không xác định chắc chắn bạn có hay không mắc đái tháo đường. Nếu có triệu chứng nghi ngờ hoặc được xếp nhóm nguy cơ cao, hãy đến cơ sở khám chữa bệnh để được đánh giá và xét nghiệm phù hợp. Nếu có dấu hiệu nặng hoặc diễn biến nhanh, hãy tìm trợ giúp y tế kịp thời.</p>
+      <div class="actions"><button class="btn secondary" type="button" id="editBtn">← Sửa câu trả lời</button><button class="btn primary" type="button" id="restartBtn">Làm lại khảo sát ↻</button></div>
+    </section>
+  </main>
+  <p style="text-align:center;color:#7b8d96;font-size:11px;margin:15px 8px 0">Bản mẫu giao diện · Cần được đơn vị chuyên môn rà soát trước khi sử dụng chính thức.</p>
+</div>
+<script>
+const steps=[...document.querySelectorAll('.step')];let current=0;
+const form=document.getElementById('assessment'),err=document.getElementById('error');
+const val=n=>form.querySelector(`[name="${n}"]:checked`)?.value||'';
+function updateStep(){steps.forEach((s,i)=>s.classList.toggle('active',i===current));document.getElementById('stepLabel').textContent=`Bước ${current+1}/4 · ${steps[current].dataset.title}`;document.getElementById('progressPct').textContent=`${Math.round((current+1)/steps.length*100)}%`;document.getElementById('progressBar').style.width=`${(current+1)/steps.length*100}%`;document.getElementById('backBtn').disabled=current===0;document.getElementById('nextBtn').textContent=current===steps.length-1?'Xem kết quả →':'Tiếp tục →';err.classList.remove('show')}
+document.querySelectorAll('input[name="sex"]').forEach(el=>el.addEventListener('change',()=>{const female=val('sex')==='female';document.getElementById('pregField').classList.toggle('hidden',!female);document.querySelectorAll('input[name="preg"]').forEach(x=>x.required=female);if(!female)document.querySelectorAll('input[name="preg"]').forEach(x=>x.checked=false)}));
+function validStep(){const step=steps[current];let ok=true;step.querySelectorAll('input[required]').forEach(el=>{if(el.type==='radio'){if(!val(el.name))ok=false}else if(!el.value)ok=false});if(current===0){const age=+document.getElementById('age').value,h=+document.getElementById('height').value,w=+document.getElementById('weight').value;if(age<18||age>120||h<100||h>230||w<25||w>300)ok=false;if(val('sex')==='female'&&!val('preg'))ok=false}err.classList.toggle('show',!ok);if(!ok)err.scrollIntoView({behavior:'smooth',block:'center'});return ok}
+function bmiData(b){if(b<18.5)return ['Thiếu cân','under'];if(b<23)return ['Bình thường','normal'];if(b<25)return ['Thừa cân','over'];if(b<30)return ['Béo phì độ I','obese1'];return ['Béo phì độ II trở lên','obese2']}
+function calc(){const age=+document.getElementById('age').value,sex=val('sex'),h=+document.getElementById('height').value/100,w=+document.getElementById('weight').value,bmi=w/(h*h);let score=0;
+if(age<40)score+=0;else if(age<50)score+=1;else if(age<60)score+=2;else score+=3;
+if(sex==='male')score+=1;
+if(sex==='female'&&val('preg')==='yes')score+=1;
+if(val('family')==='yes')score+=1;if(val('hypertension')==='yes')score+=1;if(val('activity')==='no')score+=1;
+if(bmi>=30)score+=3;else if(bmi>=25)score+=2;else if(bmi>=23)score+=1;
+const symptoms=['sym1','sym2','sym3','sym4','sym5'].some(n=>val(n)==='yes');
+return {age,sex,h,w,bmi,score,symptoms,bmiInfo:bmiData(bmi),activity:val('activity'),family:val('family'),hypertension:val('hypertension')}}
+function addAdvice(icon,title,text){const d=document.createElement('div');d.className='advice';d.innerHTML=`<div class="advice-icon">${icon}</div><div><h3>${title}</h3><p>${text}</p></div>`;document.getElementById('adviceList').appendChild(d)}
+function showSummary(){const d=calc();document.getElementById('summary').innerHTML=`<b>Tuổi:</b> ${d.age} · <b>Giới tính:</b> ${d.sex==='male'?'Nam':'Nữ'}<br><b>BMI:</b> ${d.bmi.toFixed(1)} (${d.bmiInfo[0]})<br><b>Điểm nguy cơ:</b> ${d.score}<br><b>Có dấu hiệu nghi ngờ đã chọn:</b> ${d.symptoms?'Có':'Không'}`}
+function showResult(){const d=calc(),banner=document.getElementById('resultBanner');let title,text,tag,cls;
+if(d.symptoms){title='Bạn cần được đánh giá tại cơ sở y tế';text='Bạn đã ghi nhận ít nhất một dấu hiệu có thể liên quan đến đái tháo đường. Hãy đến cơ sở khám chữa bệnh để được nhân viên y tế đánh giá, bất kể tổng điểm nguy cơ.';tag='CẦN ĐÁNH GIÁ Y TẾ';cls='alert'}
+else if(d.score>=5){title='Bạn thuộc nhóm nguy cơ cao';text='Tổng điểm từ 5 trở lên cho thấy bạn có nguy cơ cao theo bộ câu hỏi này. Hãy đến cơ sở khám chữa bệnh để được đánh giá và xét nghiệm phù hợp.';tag='NGUY CƠ CAO';cls='high'}
+else{title='Chúc mừng bạn!';text='Kết quả đánh giá cho thấy bạn có nguy cơ mắc đái tháo đường ở mức thấp theo bộ câu hỏi này. Nguy cơ thấp không có nghĩa là hoàn toàn không mắc bệnh; hãy tiếp tục chăm sóc sức khỏe và sàng lọc định kỳ.';tag='NGUY CƠ THẤP';cls='low'}
+banner.className='result-banner '+cls;document.getElementById('resultTitle').textContent=title;document.getElementById('resultText').textContent=text;document.getElementById('resultTag').textContent=tag;document.getElementById('scoreMetric').textContent=d.score;document.getElementById('bmiMetric').textContent=d.bmi.toFixed(1);document.getElementById('bmiClass').textContent=d.bmiInfo[0];
+const list=document.getElementById('adviceList');list.innerHTML='';
+if(d.symptoms||d.score>=5)addAdvice('🏥','Ưu tiên kiểm tra sức khỏe','Chủ động đến cơ sở khám chữa bệnh để được đánh giá nguy cơ, đo đường huyết hoặc làm xét nghiệm theo chỉ định. Không tự kết luận mắc bệnh chỉ dựa trên bảng hỏi.');
+else addAdvice('🌿','Tiếp tục duy trì thói quen tốt','Hãy duy trì chế độ ăn đa dạng, tăng rau xanh, hạn chế đồ uống có đường, vận động thường xuyên và kiểm tra sức khỏe định kỳ.');
+if(d.bmi>=23){const weightMsg=d.bmi>=30?'Bạn đang ở mức béo phì độ II trở lên. Cân nặng có thể làm tăng nguy cơ đái tháo đường type 2, tăng huyết áp và bệnh tim mạch. Nên trao đổi với nhân viên y tế để có kế hoạch kiểm soát cân nặng an toàn.':d.bmi>=25?'Bạn đang ở mức béo phì độ I. Hãy điều chỉnh khẩu phần, hạn chế đồ uống có đường và thực phẩm giàu năng lượng; tăng vận động và theo dõi cân nặng.':'Bạn đang ở mức thừa cân. Hãy chú ý khẩu phần ăn, hạn chế đồ uống có đường, tăng rau xanh và theo dõi cân nặng thường xuyên.';addAdvice('⚖️','Lời khuyên về cân nặng',weightMsg)}
+else if(d.bmi<18.5)addAdvice('🥗','Duy trì dinh dưỡng đầy đủ','BMI của bạn ở mức thiếu cân. Hãy ăn đa dạng, đủ năng lượng và protein; nếu sụt cân không chủ ý, hãy trao đổi với nhân viên y tế.');
+else addAdvice('⚖️','Duy trì cân nặng phù hợp','BMI của bạn nằm trong khoảng bình thường theo ngưỡng sử dụng trong bảng hỏi. Tiếp tục duy trì thói quen ăn uống và vận động lành mạnh.');
+if(d.activity==='no')addAdvice('🚶','Tăng cường vận động thể lực','Bạn chưa đạt mức vận động khuyến nghị. Hãy hướng tới ít nhất 30 phút/ngày và 5 ngày/tuần; có thể bắt đầu từ đi bộ 10–15 phút rồi tăng dần, tùy khả năng sức khỏe.');
+if(d.hypertension==='yes')addAdvice('❤️','Theo dõi huyết áp','Nếu đã được chẩn đoán tăng huyết áp, hãy theo dõi huyết áp và tuân thủ hướng dẫn điều trị của nhân viên y tế.');
+document.getElementById('formArea').classList.add('hidden');document.getElementById('hero').classList.add('hidden');document.getElementById('resultArea').classList.add('show');window.scrollTo({top:0,behavior:'smooth'})}
+document.getElementById('nextBtn').addEventListener('click',()=>{if(!validStep())return;if(current<steps.length-1){if(current===steps.length-2)showSummary();current++;updateStep();}else showResult()});
+document.getElementById('backBtn').addEventListener('click',()=>{if(current>0){current--;updateStep()}});
+document.getElementById('editBtn').addEventListener('click',()=>{document.getElementById('resultArea').classList.remove('show');document.getElementById('formArea').classList.remove('hidden');document.getElementById('hero').classList.remove('hidden');current=0;updateStep();window.scrollTo({top:0,behavior:'smooth'})});
+document.getElementById('restartBtn').addEventListener('click',()=>{form.reset();current=0;document.getElementById('pregField').classList.add('hidden');document.getElementById('resultArea').classList.remove('show');document.getElementById('formArea').classList.remove('hidden');document.getElementById('hero').classList.remove('hidden');updateStep();window.scrollTo({top:0,behavior:'smooth'})});
+updateStep();
+</script>
+</body>
+</html>

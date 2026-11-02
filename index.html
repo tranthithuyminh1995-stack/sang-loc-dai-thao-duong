@@ -42,6 +42,7 @@
               <label class="choice"><input type="radio" name="preg" value="yes"><span>Có</span></label><label class="choice"><input type="radio" name="preg" value="no"><span>Không</span></label>
             </div></div>
           </div>
+          <div class="notice">Thông tin được xử lý ngay trên trình duyệt trong bản mẫu này; chưa gửi hoặc lưu lên máy chủ.</div>
         </section>
         <section class="step" data-title="Tiền sử sức khỏe">
           <h2>Tiền sử sức khỏe</h2><p class="sub">Hãy chọn câu trả lời phù hợp với tình trạng của bạn.</p>
@@ -99,6 +100,54 @@
   <p style="text-align:center;color:#7b8d96;font-size:11px;margin:15px 8px 0">Bản mẫu giao diện · Cần được đơn vị chuyên môn rà soát trước khi sử dụng chính thức.</p>
 </div>
 <script>
+
+// ===== CẤU HÌNH GHI NHẬN THỐNG KÊ =====
+// Sau khi triển khai Apps Script, dán URL Web App vào đây.
+// Không điền thông tin định danh người dân. Dữ liệu gửi đi chỉ phục vụ thống kê.
+const STATS_CONFIG = {
+  endpoint: "https://script.google.com/macros/s/AKfycbzp-EoKMcBmT2UsJpOIqXiCWZlHk1p-tl9LNVESaVm5Ktc-fTcnhrcxvWwPigqoGM6W/exec
+",
+  publicKey: "qwerttrewqwerttrewqqwertyytrewqqwertyytr"
+};
+
+function sendAggregateStats(d) {
+  if (!STATS_CONFIG.endpoint.startsWith("https://script.google.com/")) return;
+
+  const ageGroup = d.age < 40 ? "<40" : d.age < 50 ? "40-49" : d.age < 60 ? "50-59" : "60+";
+  const bmiGroup = d.bmi < 18.5 ? "Thieu can" :
+    d.bmi < 23 ? "Binh thuong" :
+    d.bmi < 25 ? "Thua can" :
+    d.bmi < 30 ? "Beo phi do I" : "Beo phi do II tro len";
+  const riskLevel = d.symptoms ? "CAN DANH GIA Y TE" : d.score >= 5 ? "NGUY CO CAO" : "NGUY CO THAP";
+
+  const payload = {
+    key: STATS_CONFIG.publicKey,
+    ageGroup,
+    sex: d.sex === "male" ? "Nam" : "Nu",
+    bmiGroup,
+    score: d.score,
+    riskLevel,
+    symptomFlag: d.symptoms ? 1 : 0,
+    activity: d.activity === "yes" ? "Dat" : "Chua dat",
+    familyHistory: d.family === "yes" ? 1 : 0,
+    hypertension: d.hypertension === "yes" ? 1 : 0,
+    gestationalDiabetes: d.sex === "female" && val("preg") === "yes" ? 1 : 0
+  };
+
+  // no-cors được dùng vì trình duyệt không đọc được phản hồi của Apps Script.
+  // Việc gửi không ảnh hưởng đến việc hiển thị kết quả sàng lọc.
+  try {
+    fetch(STATS_CONFIG.endpoint, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  } catch (e) {
+    // Không làm gián đoạn trải nghiệm người dùng nếu gửi thống kê thất bại.
+  }
+}
+
 const steps=[...document.querySelectorAll('.step')];let current=0;
 const form=document.getElementById('assessment'),err=document.getElementById('error');
 const val=n=>form.querySelector(`[name="${n}"]:checked`)?.value||'';
@@ -116,7 +165,7 @@ const symptoms=['sym1','sym2','sym3','sym4','sym5'].some(n=>val(n)==='yes');
 return {age,sex,h,w,bmi,score,symptoms,bmiInfo:bmiData(bmi),activity:val('activity'),family:val('family'),hypertension:val('hypertension')}}
 function addAdvice(icon,title,text){const d=document.createElement('div');d.className='advice';d.innerHTML=`<div class="advice-icon">${icon}</div><div><h3>${title}</h3><p>${text}</p></div>`;document.getElementById('adviceList').appendChild(d)}
 function showSummary(){const d=calc();document.getElementById('summary').innerHTML=`<b>Tuổi:</b> ${d.age} · <b>Giới tính:</b> ${d.sex==='male'?'Nam':'Nữ'}<br><b>BMI:</b> ${d.bmi.toFixed(1)} (${d.bmiInfo[0]})<br><b>Điểm nguy cơ:</b> ${d.score}<br><b>Có dấu hiệu nghi ngờ đã chọn:</b> ${d.symptoms?'Có':'Không'}`}
-function showResult(){const d=calc(),banner=document.getElementById('resultBanner');let title,text,tag,cls;
+function showResult(){const d=calc();sendAggregateStats(d);const banner=document.getElementById('resultBanner');let title,text,tag,cls;
 if(d.symptoms){title='Bạn cần được đánh giá tại cơ sở y tế';text='Bạn đã ghi nhận ít nhất một dấu hiệu có thể liên quan đến đái tháo đường. Hãy đến cơ sở khám chữa bệnh để được nhân viên y tế đánh giá, bất kể tổng điểm nguy cơ.';tag='CẦN ĐÁNH GIÁ Y TẾ';cls='alert'}
 else if(d.score>=5){title='Bạn thuộc nhóm nguy cơ cao';text='Tổng điểm từ 5 trở lên cho thấy bạn có nguy cơ cao theo bộ câu hỏi này. Hãy đến cơ sở khám chữa bệnh để được đánh giá và xét nghiệm phù hợp.';tag='NGUY CƠ CAO';cls='high'}
 else{title='Chúc mừng bạn!';text='Kết quả đánh giá cho thấy bạn có nguy cơ mắc đái tháo đường ở mức thấp theo bộ câu hỏi này. Nguy cơ thấp không có nghĩa là hoàn toàn không mắc bệnh; hãy tiếp tục chăm sóc sức khỏe và sàng lọc định kỳ.';tag='NGUY CƠ THẤP';cls='low'}
